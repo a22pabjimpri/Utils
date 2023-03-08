@@ -299,9 +299,26 @@ public class Utils {
         pw.println(linea);
     }
 
+    public static void crearFichero(String filename) throws IOException {
+        File f = new File(filename);
+        
+        if(f.exists()){
+            System.out.println("El fichero ya existe ");
+        }else{
+            f.createNewFile();
+        }
+        f.delete();
+    }
+    
     public static void BorrarFichero(String filename) {
         File f = new File(filename);
-        f.delete();
+        
+        if(f.exists()){
+            f.delete();
+        }else{
+            System.out.println("El fichero no existe");
+        }
+        
     }
 
     public static void RenombrarFichero(String filename_origen, String filename_final) {
