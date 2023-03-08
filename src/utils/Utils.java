@@ -1,4 +1,3 @@
-
 package utils;
 
 import java.io.BufferedReader;
@@ -21,7 +20,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Utils {
-    
+
 // <editor-fold defaultstate="collapsed" desc="Leer enteros">
     private static Scanner scan = null;
 
@@ -50,7 +49,7 @@ public class Utils {
     public static int LlegirInt(Scanner scan) {
         return LlegirInt(scan, null);
     }
-    
+
     public static int LlegirInt(int valorMin, int valorMax) {
         int result = 0;
         boolean correcte = false;
@@ -107,26 +106,99 @@ public class Utils {
     }
 
 // </editor-fold>
-
-public static void bubbleSortVectInt(int[] vectInt){
+    
+// <editor-fold defaultstate="collapsed" desc="Metodos ordenacion">
+    public static void bubbleSortVectInt(int[] vectInt) {
         boolean ordenat = false;
-        int ultim = vectInt.length-1;
-        while(!ordenat){
+        int ultim = vectInt.length - 1;
+        while (!ordenat) {
             ordenat = true;
-            for(int i = 0; i < ultim; ++i){
-                if(vectInt[i] > vectInt[i+1]){
+            for (int i = 0; i < ultim; ++i) {
+                if (vectInt[i] > vectInt[i + 1]) {
                     int aux = vectInt[i];
-                    vectInt[i] = vectInt[i+1];
-                    vectInt[i+1] = aux;
+                    vectInt[i] = vectInt[i + 1];
+                    vectInt[i + 1] = aux;
                     ordenat = false;
                 }
             }
             --ultim;
         }
     }
-   
-// <editor-fold defaultstate="collapsed" desc="Ficheros de texto">
 
+    public static void countingSort(int[] vector) {
+        //Vector auxiliar
+        int[] aux = new int[vector.length + 1];
+
+        
+        int max = encontrarMasGrande(vector);
+
+        
+        int[] comptar = new int[max + 1];
+
+        
+        for (int i = 0; i < vector.length; ++i) {
+            ++comptar[vector[i]];
+        }
+
+        
+        for (int i = 1; i <= max; ++i) {
+            comptar[i] += comptar[i - 1];
+        }
+
+        
+        for (int i = vector.length - 1; i >= 0; --i) {
+            aux[comptar[vector[i]] - 1] = vector[i];
+            --comptar[vector[i]];
+        }
+
+        //Passem els números organitzats en l'auxiliar al vector original
+        for (int i = 0; i < vector.length; ++i) {
+            vector[i] = aux[i];
+        }
+    }
+
+    public static void quickSort(int[] vector, int inici, int fi){
+        if(inici < fi){
+            int partIndex = pivot(vector, inici, fi);
+            quickSort(vector, inici, partIndex-1);
+            quickSort(vector, partIndex+1, fi);
+        }
+    }
+    
+    private static int pivot(int[] vector, int inici, int fi){
+        int pivot = vector[fi];
+        int i = (inici-1);
+        
+        for(int j = inici; j < fi; ++j){
+            if(vector[j] <= pivot){
+                ++i;
+                
+                int aux = vector[i];
+                vector[i] =  vector[j];
+                vector[j] = aux;
+            }
+        }
+        
+        int aux = vector[i+1];
+        vector[i+1] = vector[fi];
+        vector[fi] = aux;
+        
+        return i+1;
+        
+    }
+    
+    private static int encontrarMasGrande(int[] vector) {
+        int max = vector[0];
+        for (int i = 1; i < vector.length; ++i) {
+            if (vector[i] > max) {
+                max = vector[i];
+            }
+        }
+        return max;
+    }
+// </editor-fold>
+
+// <editor-fold defaultstate="collapsed" desc="Ficheros de texto">
     public static void LeerFichero(String nomFichero) {
         // Creamos el enlace con el fichero en el disco
         BufferedReader buf = AbrirFicheroLectura(nomFichero, true);
@@ -159,7 +231,7 @@ public static void bubbleSortVectInt(int[] vectInt){
 
         return result;
     }
-        
+
     public static BufferedReader AbrirFicheroLectura(String nomFichero, boolean crear) {
         BufferedReader br = null;
         File f = AbrirFichero(nomFichero, crear);
@@ -178,7 +250,7 @@ public static void bubbleSortVectInt(int[] vectInt){
 
         return br;
     }
-        
+
     public static PrintWriter AbrirFicheroEscritura(String nomFichero, boolean crear, boolean blnAnyadir) {
         PrintWriter pw = null;
         File f = AbrirFichero(nomFichero, crear);
@@ -197,7 +269,7 @@ public static void bubbleSortVectInt(int[] vectInt){
 
         return pw;
     }
-    
+
     public static void CerrarFichero(BufferedReader br) {
         try {
             br.close();
@@ -205,7 +277,7 @@ public static void bubbleSortVectInt(int[] vectInt){
             Logger.getLogger(Utils.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
- 
+
     public static void CerrarFichero(PrintWriter pw) {
         pw.flush();
         pw.close();
@@ -222,26 +294,25 @@ public static void bubbleSortVectInt(int[] vectInt){
 
         return linea;
     }
-    
+
     public static void EscribirLinea(PrintWriter pw, String linea) {
         pw.println(linea);
     }
-    
+
     public static void BorrarFichero(String filename) {
         File f = new File(filename);
         f.delete();
     }
-    
+
     public static void RenombrarFichero(String filename_origen, String filename_final) {
         File f = new File(filename_origen);
         File f2 = new File(filename_final);
         f.renameTo(f2);
     }
-    
+
     // </editor-fold>
     
 // <editor-fold defaultstate="collapsed" desc="Ficheros binarios">
-    
     public static DataInputStream AbrirFicheroLecturaBinario(String nomFichero, boolean crear) {
         DataInputStream dis = null;
         File f = AbrirFichero(nomFichero, crear);
@@ -260,7 +331,7 @@ public static void bubbleSortVectInt(int[] vectInt){
 
         return dis;
     }
-    
+
     public static DataOutputStream AbrirFicheroEscrituraBinario(String nomFichero, boolean crear, boolean blnAnyadir) {
         DataOutputStream dos = null;
         File f = AbrirFichero(nomFichero, crear);
@@ -279,7 +350,7 @@ public static void bubbleSortVectInt(int[] vectInt){
 
         return dos;
     }
-    
+
     public static void CerrarFicheroBinario(DataOutputStream dos) {
         try {
             dos.flush();
@@ -288,7 +359,7 @@ public static void bubbleSortVectInt(int[] vectInt){
             Logger.getLogger(Utils.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     public static void CerrarFicheroBinario(DataInputStream dis) {
         try {
             dis.close();
@@ -296,12 +367,11 @@ public static void bubbleSortVectInt(int[] vectInt){
             Logger.getLogger(Utils.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     // </editor-fold>
     
 // <editor-fold defaultstate="collapsed" desc="Ficheros de acceso aleatorio">
-    
-    public static RandomAccessFile AbrirAccesoDirecto(String nomFitxer, String mode){
+    public static RandomAccessFile AbrirAccesoDirecto(String nomFitxer, String mode) {
         RandomAccessFile raf = null;
         try {
             raf = new RandomAccessFile(nomFitxer, mode);
@@ -310,13 +380,13 @@ public static void bubbleSortVectInt(int[] vectInt){
         }
         return raf;
     }
-    
-    public static void moverPuntero(RandomAccessFile raf, long posicionMover){
+
+    public static void moverPuntero(RandomAccessFile raf, long posicionMover) {
         try {
             raf.seek(posicionMover);
         } catch (IOException ex) {
             Logger.getLogger(Utils.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-      // </editor-fold>
+    // </editor-fold>
 }
