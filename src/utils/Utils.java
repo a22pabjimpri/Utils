@@ -198,20 +198,7 @@ public class Utils {
     }
 // </editor-fold>
 
-// <editor-fold defaultstate="collapsed" desc="Ficheros de texto">
-    public static void LeerFichero(String nomFichero) {
-        // Creamos el enlace con el fichero en el disco
-        BufferedReader buf = AbrirFicheroLectura(nomFichero, true);
-
-        String linea = LeerLinea(buf);
-        while (linea != null) {
-            System.out.println(linea);
-            linea = LeerLinea(buf);
-        }
-
-        CerrarFichero(buf);
-
-    }
+// <editor-fold defaultstate="collapsed" desc="Ficheros de texto">  
 
     public static File AbrirFichero(String nomFichero, boolean crear) {
         File result = new File(nomFichero);
@@ -335,12 +322,12 @@ public class Utils {
         File f = AbrirFichero(nomFichero, crear);
 
         if (f != null) {
-            // Declarar el writer para poder escribir en el fichero¡
-            FileInputStream reader;
+            // Declarar el reader para poder leer en el fichero¡
+            FileInputStream fis;
             try {
-                reader = new FileInputStream(f);
-                // PrintWriter para poder escribir más comodamente
-                dis = new DataInputStream(reader);
+                fis = new FileInputStream(f);
+                // DataInputStream para poder leer más comodamente
+                dis = new DataInputStream(fis);
             } catch (IOException ex) {
                 Logger.getLogger(Utils.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -355,11 +342,11 @@ public class Utils {
 
         if (f != null) {
             // Declarar el writer para poder escribir en el fichero¡
-            FileOutputStream writer;
+            FileOutputStream fos;
             try {
-                writer = new FileOutputStream(f, blnAnyadir);
-                // PrintWriter para poder escribir más comodamente
-                dos = new DataOutputStream(writer);
+                fos = new FileOutputStream(f, blnAnyadir);
+                // dataOutputStream para poder escribir más comodamente
+                dos = new DataOutputStream(fos);
             } catch (IOException ex) {
                 Logger.getLogger(Utils.class.getName()).log(Level.SEVERE, null, ex);
             }
